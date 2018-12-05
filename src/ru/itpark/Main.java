@@ -8,19 +8,23 @@ import ru.itpark.domain.House;
 import ru.itpark.repository.HouseRepository;
 import ru.itpark.service.HouseService;
 
+import java.util.List;
+
 public class Main {
     public static void main(String[] args) {
         HouseService houseService = new HouseService(new HouseRepository());
 
-        houseService.add(new House(1, 100_000, "Ново-Савиновский"));
-        houseService.add(new House(2, 150_000, "Вахитовский"));
-        houseService.add(new House(3, 75_000, "Советский"));
-        houseService.add(new House(4, 255_000, "Московский"));
+        houseService.add(new House(1, 9_000_000, "Ново-Савиновский"));
+        houseService.add(new House(2, 3_150_000, "Вахитовский"));
+        houseService.add(new House(3, 4_005_000, "Советский"));
+        houseService.add(new House(4, 5_555_000, "Московский"));
 
-        System.out.println(houseService.getSorted(new SearchMinComparator()));
-        System.out.println(houseService.getSorted(new SearchMaxComparator()));
-        System.out.println(houseService.getSorted(new SortingAscNameComparator()));
-        System.out.println(houseService.getSorted(new SortingDescNameComparator()));
 
-    }
+        List<House> findByName = houseService.findByArea(new String[]{"Московский", "Ново-Савиновский"});
+        findByName.sort(new SortingAscNameComparator());
+        System.out.println(findByName);
+
+        List<House> findByPrice = houseService.findByPrice(3_000_000, 5_000_000);
+        findByPrice.sort(new SearchMaxComparator());
+        System.out.println(findByPrice);    }
 }
